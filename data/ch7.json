@@ -1,0 +1,39 @@
+{
+  "id": "ch7",
+  "title": "第七章：Macro Groups & Palettes 操作全攻略",
+  "time": "02:38:42 - 03:32:01",
+  "tags": ["#Adobe優化", "#環境設定", "#視覺化面板"],
+  "summary": "這段內容教你如何建立『自動化工作區』，讓 KM 只在 Adobe 開啟時激活，並建立不用記快捷鍵的視覺化工具箱。",
+  "sections": [
+    {
+      "type": "text",
+      "h3": "Step 1：建立 Adobe 專屬群組 (環境隔離) [02:38:42]",
+      "content": "這是所有 Adobe 自動化的基礎。確保你的修圖指令不會在打開 Chrome 時被誤觸。",
+      "box": "<strong>具體步驟：</strong><br>1. 點擊左下角 <b>+</b> 建立群組。<br>2. 命名為 <code>Adobe Suite</code>。<br>3. 在右側 <b>Available in...</b> 選單改選 <code>Available in these applications</code>。<br>4. 點擊 <b>+</b> 選取 Photoshop。"
+    },
+    {
+      "type": "accordion",
+      "h3": "Step 2：設定面板啟動邏輯 (Activation) [02:45:10]",
+      "summary": "👉 點擊展開：查看如何讓面板隨叫隨到",
+      "details": "1. 在群組設定中找到 <b>Activation</b> 區塊。<br>2. 將原本的 <i>Always activated</i> 改為 <code>Shows a palette for one action when...</code>。<br>3. 點擊 <b>New Trigger -> Hotkey</b>，按下例如 <code>F1</code>。<br><strong>結果：</strong> 之後在 PS 裡按 F1 就會跳出選單，選完動作選單自動消失。"
+    },
+    {
+      "type": "accordion",
+      "h3": "Step 3：面板外觀自定義 (Style Customization) [02:55:30]",
+      "summary": "👉 點擊展開：細修 Icon 大小與排列方式",
+      "details": "1. 點擊右側設定區上方的 <b>Palette Style</b> 按鈕。<br>2. <b>Columns:</b> 設定欄數（建議設為 2）。<br>3. <b>Icon Size:</b> 調整圖示大小（建議 32px）。<br>4. <b>Opacity:</b> 調整透明度，讓面板不遮擋圖層。"
+    },
+    {
+      "type": "text",
+      "h3": "Step 4：實作 - 自動化選單點擊動作 [03:05:00]",
+      "content": "不用再記 Adobe 那種四個按鍵組合的快捷鍵，改用選單路徑偵測。",
+      "box": "<strong>具體步驟：</strong><br>1. 在該群組內新增 Macro。<br>2. 新增 Action：<code>Select or Show a Menu Item</code>。<br>3. 點擊 <b>Menu</b> 選單按鈕，沿著路徑選到你要的功能（如：<i>File -> Export...</i>）。"
+    },
+    {
+      "type": "accordion",
+      "h3": "Step 5：高手捷徑 - 衝突面板 [03:20:00]",
+      "summary": "👉 點擊展開：快速建立臨時選單的方法",
+      "details": "1. 建立兩個 Macros，並賦予它們 <b>完全相同</b> 的快捷鍵。<br>2. 當按下該快捷鍵時，KM 會自動在滑鼠旁彈出選單讓你挑選。<br>3. 這種方式不需要設定 Group 屬性，最適合快速建立小型工具組。"
+    }
+  ]
+}

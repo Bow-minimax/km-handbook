@@ -1,0 +1,33 @@
+{
+  "id": "ch4",
+  "title": "第四章：滑鼠控制與圖像辨識 (Found Image)",
+  "time": "00:41:44 - 01:10:00",
+  "tags": ["#圖像辨識", "#點擊動作", "#座標定位"],
+  "summary": "當軟體沒有選單指令可點時，圖像辨識 (Found Image) 是唯一的救星。學會讓 KM 自動在螢幕上『找按鈕』並點擊它。",
+  "sections": [
+    {
+      "type": "text",
+      "h3": "Step 1：基礎滑鼠點擊設定 [00:41:44]",
+      "content": "學習如何讓滑鼠移動到特定位置並執行單擊或雙擊。",
+      "box": "<strong>具體步驟：</strong><br>1. 搜尋並加入 <code>Move or Click Mouse</code> 動作。<br>2. 在選單中選擇點擊方式（如：<i>Left Click</i>）。<br>3. <b>重要：</b> 設定座標參考點，建議選 <code>Front Window's Center</code>。"
+    },
+    {
+      "type": "accordion",
+      "h3": "Step 2：進階點擊 - 螢幕圖像辨識 (Found Image) [00:48:30]",
+      "summary": "👉 點擊展開：讓 KM 自己找按鈕點擊的步驟",
+      "details": "1. 將動作改為 <code>Click at Found Image</code>。<br>2. <b>截圖：</b> 使用 Mac 的截圖功能 (Cmd+Shift+4) 擷取軟體中某個按鈕的小區域。<br>3. 將截圖直接<b>拖入</b> KM 動作中的影像框。<br>4. 設定 <b>Search:</b> <code>In the Front Window</code> (提高辨識速度)。"
+    },
+    {
+      "type": "accordion",
+      "h3": "Step 3：調整模糊匹配度 (Fuzziness) [00:55:20]",
+      "summary": "👉 點擊展開：解決『辨識不到』或『點錯位置』的問題",
+      "details": "1. 在影像框下方有一個滑桿（Fuzziness）。<br>2. <b>往左調：</b> 越嚴格，必須跟截圖長得一模一樣（適合細長圖示）。<br>3. <b>往右調：</b> 越寬鬆，可以容許一點色差或解析度差異。<br>4. <b>提示：</b> 若同畫面有多個相似按鈕，請點擊 <code>Display</code> 按鈕，KM 會在螢幕上圈出它找到的所有位置。"
+    },
+    {
+      "type": "text",
+      "h3": "Step 4：相對座標與偏移設定 [01:02:15]",
+      "content": "有時候按鈕位置會稍微跳動，這時需要使用相對偏移。",
+      "box": "<strong>具體步驟：</strong><br>1. 在座標設定欄位輸入 <code>+10</code> 或 <code>-15</code>。<br>2. 這代表在找到圖像後的重心位置，向右或向下移動多少像素再點擊。"
+    }
+  ]
+}
