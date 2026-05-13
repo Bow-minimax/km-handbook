@@ -1,0 +1,39 @@
+{
+  "id": "ch7",
+  "title": "第七章：Macro Groups & Palettes 操作全攻略 (SOP 介面版)",
+  "time": "02:38:42 - 03:32:01",
+  "tags": ["#Adobe優化", "#環境設定", "#視覺化面板", "#核心邏輯"],
+  "summary": "本章詳細解析 KM 群組設定中的每一個下拉選單。學會如何透過設定讓 KM 自動『感應』工作環境，並建立最省空間的視覺面板。",
+  "sections": [
+    {
+      "type": "text",
+      "h3": "Step 1：群組作用域設定 (Available in...) [02:38:42]",
+      "content": "這是決定群組何時『生效』的開關。避免你的 Adobe 快捷鍵在瀏覽網頁時亂跳。",
+      "box": "<strong>選單項目逐一解釋：</strong><br>• <b>All Applications:</b> 全域生效（預設值）。<br>• <b>Available in these applications:</b> 只在特定軟體開啟時生效。<b>【設計師必選】</b>，點擊 <code>+</code> 加入 Illustrator 或 PS。<br>• <b>Available except in these applications:</b> 除了特定軟體外都生效（例如：避開遊戲或特定瀏覽器）。"
+    },
+    {
+      "type": "accordion",
+      "h3": "Step 2：激活模式深度解析 (Activation) [02:45:10]",
+      "summary": "👉 點擊展開：決定巨集如何『醒過來』與『顯現』",
+      "details": "這是 KM 設定中最核心的選單，分為三大行為：<br><br><b>1. 基礎激活 (無面板)：</b><br>• <i>Always activated:</i> 只要專案開著，裡面的快捷鍵就一直待命。<br>• <i>Activated for one action when:</i> 按一下觸發鍵，這組功能只活一次，用完就自動關閉。<br><br><b>2. 顯示面板類 (Shows a palette)：</b><br>• <i>Shows a palette for one action when:</i> <b>【實戰最推薦】</b>。按下快捷鍵（如 F1）跳出面板，你點選其中一個功能，面板立刻自動收起。適合點選工具。<br>• <i>Shows/hides a palette when:</i> 開關式。按一下顯示面板在那邊，再按一下隱藏。適合常駐的副面板。<br>• <i>Shows a palette until:</i> 一直顯示直到發生某事（如：切換視窗）。"
+    },
+    {
+      "type": "accordion",
+      "h3": "Step 3：面板樣式自定義 (Palette Style) [02:55:30]",
+      "summary": "👉 點擊展開：解釋 Shrink、Icon、Text 的細節參數",
+      "details": "點擊右上角 <b>Palette Style</b> 按鈕後會跳出小視窗，各項解釋如下：<br><br>• <b>Shrink (收縮):</b> <b>【重要】</b>勾選後，面板會自動裁掉多餘空間，緊貼內容寬度。省空間神技。<br>• <b>Icons:</b> 選擇 <i>Icon Only</i> (只顯示圖示)、<i>Text Only</i> (只顯示文字) 或 <i>Both</i> (兩者皆有)。<br>• <b>Columns (欄數):</b> 設定面板要橫向排幾排。若功能多建議設為 2 或 3 欄。<br>• <b>Opacity:</b> 透明度。建議設在 80% 左右，避免遮擋 Illustrator 底下的圖層。"
+    },
+    {
+      "type": "accordion",
+      "h3": "Step 4：面板顯示位置 (Location) [03:00:15]",
+      "summary": "👉 點擊展開：決定面板在螢幕哪裡噴出來",
+      "details": "在 Palette Style 視窗中，下方的 <b>Location</b> 下拉選單：<br><br>• <b>Under the Mouse:</b> <b>【神操作】</b>面板會直接在滑鼠尖端噴出。手部移動路徑最短，效率最高。<br>• <b>At the Center of the Main Screen:</b> 永遠出現在主螢幕正中間。<br>• <b>At a Specific Position:</b> 固定在螢幕某個角落（需手動輸入座標）。"
+    },
+    {
+      "type": "text",
+      "h3": "Step 5：高手技巧 - 衝突面板 (Conflict Palette) [03:20:00]",
+      "content": "不需要設定複雜的 Group 激活邏輯，靠『快捷鍵撞車』來自動生成面板。",
+      "box": "<strong>操作小技巧：</strong><br>1. 給三、四個 Macro 設定<b>一模一樣</b>的快捷鍵。<br>2. 當你按鍵時，KM 會因為不知道你要點哪一個，而主動彈出選單問你。<br>3. 這種選單會自動對應你的鍵盤英文字母（例如按 A 執行第一個，按 B 執行第二個）。"
+    }
+  ]
+}
