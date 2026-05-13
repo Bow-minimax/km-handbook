@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>KM Master 實戰講義系統</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #1e1e1e;
+            --sidebar-bg: #121212;
+            --card-bg: #2d2d2d;
+            --accent-color: #4CAF50;
+            --text-main: #ffffff;
+            --text-dim: #b0b0b0;
+            --border-color: #404040;
+            --highlight-color: #ffeb3b;
+        }
+
+        body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg-color); color: var(--text-main); margin: 0; display: flex; }
+        
+        /* 側邊欄 */
+        #sidebar { width: 280px; height: 100vh; background: var(--sidebar-bg); border-right: 1px solid var(--border-color); position: fixed; padding: 20px; overflow-y: auto; }
+        .logo { color: var(--accent-color); font-size: 1.5rem; font-weight: 800; margin-bottom: 25px; display: flex; align-items: center; gap: 10px; }
+        .search-box { background: #000; border: 1px solid var(--border-color); border-radius: 8px; padding: 10px; margin-bottom: 20px; display: flex; align-items: center; }
+        .search-box input { background: transparent; border: none; color: white; width: 100%; outline: none; margin-left: 8px; }
+        #toc-list { list-style: none; padding: 0; }
+        #toc-list li { margin-bottom: 12px; }
+        #toc-list a { color: var(--text-dim); text-decoration: none; font-size: 14px; transition: 0.2s; cursor: pointer; }
+        #toc-list a:hover { color: var(--accent-color); }
+
+        /* 主內容 */
+        #main-content { margin-left: 280px; padding: 50px; width: 100%; max-width: 1000px; }
+        .chapter-card { background: var(--card-bg); border-radius: 12px; padding: 35px; margin-bottom: 40px; border-left: 6px solid var(--accent-color); position: relative; }
+        .tag { background: rgba(76, 175, 80, 0.1); color: var(--accent-color); border: 1px solid var(--accent-color); padding: 2px 8px; border-radius: 4px; font-size: 12px; margin-right: 5px; }
+        
+        /* 摺疊詳解 */
+        details { margin: 15px 0; border: 1px solid var(--border-color); border-radius: 6px; background: rgba(0,0,0,0.1); }
+        summary { padding: 12px; cursor: pointer; color: var(--accent-color); font-weight: 600; list-style: none; }
+        summary::before { content: "▼ "; font-size: 10px; transition: 0.3s; }
+        details[open] summary::before { content: "▲ "; }
+        .detail-body { padding: 15px; border-top: 1px solid var(--border-color); line-height: 1.6; }
+
+        /* 圖片縮放 */
+        .img-wrapper { position: relative; display: inline-block; margin: 20px 0; resize: both; overflow: auto; border: 1px solid var(--border-color); min-width: 200px; }
+        .img-wrapper img { width: 100%; height: 100%; object-fit: contain; display: block; }
+        .resizer-hint { position: absolute; bottom: 0; right: 0; background: var(--accent-color); color: white; font-size: 9px; padding: 1px 3px; }
+
+        mark { background-color: var(--highlight-color); color: black; }
+    </style>
+</head>
+<body>
+
+<div id="sidebar">
+    <div class="logo"><i class="fas fa-bolt"></i> KM Master</div>
+    <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input type="text" id="globalSearch" placeholder="搜尋關鍵字或標籤..." onkeyup="handleSearch()">
+    </div>
+    <div id="tag-filter" style="margin-bottom: 20px;"></div>
+    <nav id="toc-list"></nav>
+</div>
+
+<div id="main-content">
+    <h1 style="font-size: 2.2rem; border-bottom: 2px solid var(--accent-color); padding-bottom: 10px;">KM 終極實戰筆記庫</h1>
+    <div id="loading" style="color: var(--accent-color);">正在從 GitHub 同步資料...</div>
+    <div id="chapters-container"></div>
+</div>
+
+<script>
+    // --- 配置區 ---
+    const CONFIG = {
+        username: "Bow-minimax", // 修改為你的 GitHub 帳號
+        repo: "Km-handbook",           // 修改為你的倉庫名稱
+        branch: "main"
+    };
+
+    let allChapters = [];
+
+    async function fetchData() {
+        try {
+            const listUrl = `https://api.github.com/repos/${CONFIG.username}/${CONFIG.repo}/contents/data`;
+            const response = await fetch(listUrl);
+            const files = await response.json();
+            
+            const jsonFiles = files.filter(f => f.name.endsWith('.json'));
+            
+            for (let file of jsonFiles) {
+                const contentResp = await fetch(file.download_url);
+                const data = await contentResp.json();
+                allChapters.push(data);
+            }
+            document.getElementById('loading').style.display = 'none';
+            render();
+        } catch (err) {
+            document.getElementById('loading').innerText = "讀取失敗，請檢查 GitHub 設定。";
+        }
+    }
+
+    function render(filter = "", tag = "") {
+        const container = document.getElementById('chapters-container');
+        const toc = document.getElementById('toc-list');
+        const tagBox = document.getElementById('tag-filter');
+        container.innerHTML = "";
+        toc.innerHTML = "";
+        
+        let tagsSet = new Set();
+
+        allChapters.forEach(ch => {
+            if (tag && !ch.tags.includes(tag)) return;
+            if (filter && !JSON.stringify(ch).toUpperCase().includes(filter.toUpperCase())) return;
+
+            ch.tags.forEach(t => tagsSet.add(t));
+            toc.innerHTML += `<li><a onclick="document.getElementById('${ch.id}').scrollIntoView()">${ch.title}</a></li>`;
+
+            let sectionsHtml = ch.sections.map(s => {
+                if (s.type === "text") return `<div style="margin-top:20px;"><h3>${s.h3}</h3><p>${s.content}</p>${s.box ? `<div style="border:1px dashed #666; padding:15px; background:rgba(255,255,255,0.05)">${s.box}</div>` : ''}</div>`;
+                if (s.type === "accordion") return `<div style="margin-top:20px;"><h3>${s.h3}</h3><details><summary>${s.summary}</summary><div class="detail-body">${s.details}</div></details></div>`;
+                if (s.type === "image") {
+                    const savedSize = localStorage.getItem(`size-${s.path}`) || "width:600px; height:300px;";
+                    return `<div><h3>${s.h3}</h3><div class="img-wrapper" id="wrap-${ch.id}" style="${savedSize}" onmouseup="saveSize('${s.path}', this)"><img src="${s.path}"><div class="resizer-hint">RESIZE</div></div><p style="font-size:13px; color:#888;">${s.caption}</p></div>`;
+                }
+            }).join('');
+
+            container.innerHTML += `
+                <div class="chapter-card" id="${ch.id}">
+                    <h2>${ch.title}</h2>
+                    <p style="font-size:13px; color:var(--text-dim);">時間軸：${ch.time}</p>
+                    <div>${ch.tags.map(t => `<span class="tag" onclick="render('','${t}')" style="cursor:pointer">${t}</span>`).join('')}</div>
+                    <p style="font-style:italic; color:#aaa; margin:20px 0;">${ch.summary}</p>
+                    ${sectionsHtml}
+                </div>
+            `;
+        });
+
+        if (filter) highlightText(filter);
+    }
+
+    function saveSize(path, el) {
+        localStorage.setItem(`size-${path}`, `width:${el.style.width}; height:${el.style.height};`);
+    }
+
+    function handleSearch() {
+        const q = document.getElementById('globalSearch').value;
+        render(q);
+    }
+
+    function highlightText(text) {
+        if (!text) return;
+        const container = document.getElementById('chapters-container');
+        const innerHTML = container.innerHTML;
+        const re = new RegExp(`(${text})`, "gi");
+        container.innerHTML = innerHTML.replace(re, `<mark>$1</mark>`);
+    }
+
+    fetchData();
+</script>
+</body>
+</html>
